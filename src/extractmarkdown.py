@@ -95,7 +95,7 @@ def extract_title(markdown):
     raise ValueError("No title found: h1 block missing")
 
 
-def generate_page(from_path, template_path, dest_path):
+def generate_page(from_path, template_path, dest_path, basepath):
     print(f"Generating page from {from_path} to {dest_path} using {template_path}")
     with open(from_path) as f:
         markdown = f.read()
@@ -103,7 +103,10 @@ def generate_page(from_path, template_path, dest_path):
         template = f.read()
     html_content = markdown_to_html(markdown).to_html()
     title = extract_title(markdown)
-    final_html = template.replace("{{ Title }}", title).replace("{{ Content }}", html_content)
+    final_html = template.replace("{{ Title }}", title)
+    final_html = final_html.replace("{{ Content }}", html_content)
+    final_html = final_html.replace("href=\"/", f"href=\"{basepath}")
+    final_html = final_html.replace("src=\"/", f"src=\"{basepath}")
     os.makedirs(os.path.dirname(dest_path), exist_ok=True)
     with open(dest_path, "w") as f:
         f.write(final_html)
