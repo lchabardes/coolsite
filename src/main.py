@@ -34,7 +34,7 @@ def generate_pages_recursive(src, template, dest, basepath):
 
 
 def main(basepath="/"):
-    copyContent("static", "public")
+    copyContent("static", "docs")
     generate_pages_recursive("content", "template.html", "docs", basepath)
 
 
